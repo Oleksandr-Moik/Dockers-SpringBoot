@@ -11,7 +11,7 @@ services:
     image: service-3-firsname:v1
     build: ./DockerSBServise_FirstName/
     ports:
-      - '8083:8083'
+      - '8081:8081'
     depends_on:
       - service-lastname 
       - my-sql-db
@@ -36,7 +36,7 @@ services:
     image: service-1-age:v1
     build: ./DockerSBServise_Age
     ports:
-      - '8081:8081'
+      - '8082:8082'
     depends_on:
       - my-sql-db
     networks:

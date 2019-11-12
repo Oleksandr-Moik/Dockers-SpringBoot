@@ -28,7 +28,7 @@ public class MainController { // FirstName 1 //
         if (userRepository.findById(id).isPresent()) {
         
             RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<User> response = restTemplate.getForEntity("http://LastName:8080/user/"+id, User.class);
+            ResponseEntity<User> response = restTemplate.getForEntity("http://LastName:8082/user/"+id, User.class);
             
             User user = response.getBody();
             user.setFirstName(userRepository.findById(id).get().getFirstName());

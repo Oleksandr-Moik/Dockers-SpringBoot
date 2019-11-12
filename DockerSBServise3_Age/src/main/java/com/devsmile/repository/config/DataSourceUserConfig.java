@@ -1,4 +1,4 @@
-package com.devsmile.config;
+package com.devsmile.repository.config;
 
 import java.util.HashMap;
 

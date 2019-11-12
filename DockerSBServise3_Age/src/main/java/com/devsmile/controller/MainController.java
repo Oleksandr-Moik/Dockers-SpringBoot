@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.devsmile.dao.UserRepository;
-import com.devsmile.model.User;
+import com.devsmile.repository.dao.UserRepository;
+import com.devsmile.service.model.UserEntity;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,12 +23,12 @@ public class MainController { // AGE 3 //
     private UserRepository userRepository;
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") Integer id) {
+    public ResponseEntity<UserEntity> getUserById(@PathVariable("id") Integer id) {
         if (userRepository.findById(id).isPresent()) {
-            Integer age = userRepository.findById(id).get().getAge();
-            User user = new User(id, "", "", age);
-            log.info("Service GET 3 age: {}",user.toString());
-            return ResponseEntity.ok(user);
+            Integer age; //userRepository.findById(id).get().getAge();
+            //UserEntity user = new UserEntity(id, "", "", age);
+//            log.info("Service GET 3 age: {}",user.toString());
+            return ResponseEntity.ok().body(null);//user);
         } else {
             log.error("Service GET 3 age: user with id={} not found.",id);
             return ResponseEntity.badRequest().body(null);
@@ -37,8 +37,8 @@ public class MainController { // AGE 3 //
 
     @ResponseBody
     @RequestMapping(value = "/user/", method = RequestMethod.POST, produces = { "text/plain", "application/json" })
-    public ResponseEntity<User> insertUser(@RequestBody User user) {
-        User newUser = userRepository.save(user);
+    public ResponseEntity<UserEntity> insertUser(@RequestBody UserEntity user) {
+        UserEntity newUser = null;//userRepository.save(user);
         
         log.info("Service POST 3 age: {}",newUser.toString());
         

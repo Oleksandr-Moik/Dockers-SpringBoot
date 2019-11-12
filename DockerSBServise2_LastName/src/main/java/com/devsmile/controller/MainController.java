@@ -19,7 +19,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.devsmile.dao.UserRepository;
 import com.devsmile.model.entity.UserEntity;
-import com.devsmile.model.entity.UserEntity.UserBuilder;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,7 +38,7 @@ public class MainController { // LastName 2 //
             HttpEntity<String> httpEntity= new HttpEntity<String>("parameters", httpHeaders);
             RestTemplate restTemplate = new RestTemplate();
             
-            ResponseEntity<UserEntity> response = restTemplate.exchange("http://Age:8080/user/"+id, HttpMethod.GET, httpEntity, UserEntity.class);
+            ResponseEntity<UserEntity> response = restTemplate.exchange("http://Age:8083/user/"+id, HttpMethod.GET, httpEntity, UserEntity.class);
             
             UserEntity user = response.getBody().builder().lastName(userRepository.findById(id).get().getLastName()).build();
             
@@ -60,7 +59,7 @@ public class MainController { // LastName 2 //
         ResponseEntity<UserEntity> response = restTemplate.postForEntity("http://Age:8080/user/", user, UserEntity.class);
         
         UserEntity newUser = response.getBody();
-        newUser.setLastName(user.getLastName());
+        //newUser.setLastName(user.getLastName());
         
         log.info("Service POST 2 lastName: {}",newUser.toString());
         
