@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.devsmile.dao.UserRepository;
-import com.devsmile.model.entity.UserEntity;
+import com.devsmile.repository.dao.UserRepository;
+import com.devsmile.service.model.UserEntity;
 
 import lombok.extern.slf4j.Slf4j;
 

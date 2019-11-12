@@ -1,21 +1,16 @@
-package com.devsmile.model.entity;
+package com.devsmile.service.model;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.ToString;
 
 @Entity
 @Getter
-//@Builder
-@Table(name="UserEntity")
+//@Table(name="User")
 @ToString
 public class UserEntity {
 
- 	@Id
-//  @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 	private String firstName;
     private String lastName;
