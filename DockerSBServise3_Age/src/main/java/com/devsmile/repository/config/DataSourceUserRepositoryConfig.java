@@ -17,15 +17,15 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "com.devsmile.dao", entityManagerFactoryRef = "UserEntityManager",
-        transactionManagerRef = "UserTransactionManager"
+        basePackages = "com.devsmile.repository.dao", entityManagerFactoryRef = "UserRepositoryEntityManager",
+        transactionManagerRef = "UserRepositoryTransactionManager"
 )
-public class DataSourceUserConfig {
+public class DataSourceUserRepositoryConfig {
 
     @Autowired
     private Environment environment;
     @Bean
-    public DataSource UserDataSourse() {
+    public DataSource UserRepositoryDataSourse() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(environment.getProperty("spring.datasource.driver-class-name"));
         dataSource.setUrl(environment.getProperty("spring.datasource.url"));
@@ -34,11 +34,11 @@ public class DataSourceUserConfig {
         return dataSource;
     }
     @Bean
-    public LocalContainerEntityManagerFactoryBean UserEntityManager() {
+    public LocalContainerEntityManagerFactoryBean UserRepositoryEntityManager() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(UserDataSourse());
+        em.setDataSource(UserRepositoryDataSourse());
 
-        em.setPackagesToScan("com.devsmile.model");
+        em.setPackagesToScan("com.devsmile.repository.model");
         em.setPersistenceUnitName("PERSITENCE_UNIT_USER");
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -55,9 +55,9 @@ public class DataSourceUserConfig {
         return em;
     }
     @Bean
-    public PlatformTransactionManager UserTransactionManager() {
+    public PlatformTransactionManager UserRepositoryTransactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(UserEntityManager().getObject());
+        transactionManager.setEntityManagerFactory(UserRepositoryEntityManager().getObject());
         return transactionManager;
     }
 }
