@@ -6,7 +6,7 @@ networks:
 
 services:
 
-  service-firsname:
+  service-1-firsname:
     container_name: FirstName
     image: service-1-firsname:v1
     build: ./DockerSBServise1_FirstName/
@@ -19,7 +19,7 @@ services:
       - default-net
      
       
-  service-lastname:
+  service-2-lastname:
     container_name: LastName
     image: service-2-lastname:v1
     build: ./DockerSBServise2_LastName/
@@ -31,7 +31,7 @@ services:
     networks:
       - default-net
     
-  service-age:
+  service-2-age:
     container_name: Age
     image: service-3-age:v1
     build: ./DockerSBServise3_Age

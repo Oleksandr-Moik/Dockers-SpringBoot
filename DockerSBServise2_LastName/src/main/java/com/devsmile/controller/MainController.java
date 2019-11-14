@@ -63,7 +63,7 @@ public class MainController { // LastName 2 //
         
         log.info("Service POST 2 lastName: {}",newUser.toString());
         
-        userRepository.save(newUser);
+        //userRepository.save(newUser);
         
         return ResponseEntity.ok(newUser);
     }

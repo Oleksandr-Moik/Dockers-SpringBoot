@@ -1,29 +1,39 @@
-package com.devsmile.service.model;
+package com.devsmile.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Table;
 
+import org.springframework.data.annotation.Id;
+
+import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
 
+@Data
 @Entity
+@Table(name="User")
 @Getter
 @ToString
-public class UserEntity {
+public class User {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private Integer age;
 
-    public UserEntity() {
+    public User() {
         super();
     }
     
-    public UserEntity(UserBuilder builder) {
+    public User(UserBuilder builder) {
         this.age=builder.age;
         this.id=builder.id;
     }
     
     public UserBuilder builder() {
-        return new UserEntity.UserBuilder();
+        return new User.UserBuilder();
     }
     
     @ToString
@@ -46,8 +56,8 @@ public class UserEntity {
             return this;
         }
         
-        public UserEntity build() {
-            return new UserEntity(this);
+        public User build() {
+            return new User(this);
         }
     }
     

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.devsmile.dao.UserRepository;
-import com.devsmile.model.UserEntity;
+import com.devsmile.repository.dao.UserRepository;
+import com.devsmile.service.model.UserEntity;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,7 +31,7 @@ public class MainController { // FirstName 1 //
             ResponseEntity<UserEntity> response = restTemplate.getForEntity("http://LastName:8082/user/"+id, UserEntity.class);
             
             UserEntity user = response.getBody();
-            user.setFirstName(userRepository.findById(id).get().getFirstName());
+            //user.setFirstName(userRepository.findById(id).get().getFirstName());
             
             log.info("Service GET 1 FirstName: {}",user.toString());
             
@@ -49,11 +49,11 @@ public class MainController { // FirstName 1 //
         ResponseEntity<UserEntity> response = restTemplate.postForEntity("http://LastName:8080/user/", user, UserEntity.class);
         
         UserEntity newUser = response.getBody();
-        newUser.setFirstName(user.getFirstName());
+        //newUser.setFirstName(user.getFirstName());
         
         log.info("Service POST 1 FirstName: {}",newUser.toString());
 
-        userRepository.saveAndFlush(newUser);
+        //userRepository.saveAndFlush(newUser);
         
         return ResponseEntity.ok(newUser);
     }
