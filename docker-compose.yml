@@ -13,7 +13,7 @@ services:
     ports:
       - '8081:8081'
     depends_on:
-      - service-lastname 
+      - service-2-lastname 
       - my-sql-db
     networks:
       - default-net
@@ -26,12 +26,12 @@ services:
     ports:
       - '8082:8082'
     depends_on:
-      - service-age
+      - service-3-age
       - my-sql-db
     networks:
       - default-net
     
-  service-2-age:
+  service-3-age:
     container_name: Age
     image: service-3-age:v1
     build: ./DockerSBServise3_Age
