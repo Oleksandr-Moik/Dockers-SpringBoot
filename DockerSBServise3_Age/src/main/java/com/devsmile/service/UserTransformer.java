@@ -4,7 +4,7 @@ import com.devsmile.model.User;
 import com.devsmile.model.UserDTO;
 
 public class UserTransformer {
-	
+
 	public static UserDTO convert(User user) {
 		return UserDTO.builder().age(user.getAge()).id(user.getId()).build();
 	}

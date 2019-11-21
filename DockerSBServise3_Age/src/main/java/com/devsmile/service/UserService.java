@@ -19,22 +19,25 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 //@RequiredArgsConstructor
 public class UserService {
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
-	public List<UserDTO> getUsers(){
+
+	public List<UserDTO> getUsers() {
 		List<User> users = userRepository.findAll();
-		log.info("3 Result List = {}",users.toString());
-		return users.stream()
-			        .map(user -> UserTransformer.convert(user))
-			        .collect(Collectors.toList());
+		log.info("3 Result List = {}", users.toString());
+		return users.stream().map(user -> UserTransformer.convert(user)).collect(Collectors.toList());
 	}
-	
-	public UserDTO  getUser(Integer id){		
-		Optional<User> user = userRepository.findById(id); 
+
+	public UserDTO getUser(Integer id) {
+
+		Optional<User> user = userRepository.findById(id);
 		log.info("3 Result Optional<User> = {}", user.toString());
-    	if (user.isPresent()) return UserTransformer.convert(user.get());
-    	else return null;
+
+		if (user.isPresent()) {
+			return UserTransformer.convert(user.get());
+		} else {
+			return null;
+		}
 	}
 }
