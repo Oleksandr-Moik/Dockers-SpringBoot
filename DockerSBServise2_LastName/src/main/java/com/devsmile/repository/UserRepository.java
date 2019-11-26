@@ -1,10 +1,10 @@
-package com.devsmile.repository.dao;
+package com.devsmile.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.devsmile.repository.model.UserRepositoryEntity;
+import com.devsmile.model.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserRepositoryEntity, Integer> {
+public interface UserRepository extends JpaRepository<User, Integer> {
 }
