@@ -19,14 +19,14 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private Integer age;
+	
+	public User() {
+		super();
+	}
 
-    public User() {
-        super();
-    }
-    
-    public User(Integer id, Integer age) {
+	public User(Integer id, Integer age) {
 		super();
 		this.id = id;
 		this.age = age;
-	}    
+	}
 }

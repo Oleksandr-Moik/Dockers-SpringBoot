@@ -23,7 +23,7 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	public List<UserDTO> getUsers() {
+	public List<UserDTO> getUsersList() {
 		List<User> users = userRepository.findAll();
 		log.info("3 Result List = {}", users.toString());
 		return users.stream().map(user -> UserTransformer.convert(user)).collect(Collectors.toList());
