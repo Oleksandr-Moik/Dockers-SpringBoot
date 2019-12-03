@@ -22,15 +22,15 @@ public class UserRestController {
 
 	@GetMapping("/user")
 	public ResponseEntity<List<UserDTO>> getUsersList() {
-		log.info("3 Call getUsers");
+		log.info("3 Call getUsersList");
 		return ResponseEntity.ok(userService.getUsersList());
 	}
 
 	@GetMapping("/user/{id}")
 	public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Integer id) {
-		log.info("3 Call getUser with param id = {}", id);
+		log.info("3 Call getUserById with param id = {}", id);
 
-		UserDTO userDTO = userService.getUser(id);
+		UserDTO userDTO = userService.getUserById(id);
 		log.info("3 Returnet userDTO entity = {}", userDTO.toString());
 
 		if (userDTO.equals(null)) {

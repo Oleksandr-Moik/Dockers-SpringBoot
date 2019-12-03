@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -15,50 +16,68 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.devsmile.ServiceConnectiongConfiguration;
 import com.devsmile.model.User;
 import com.devsmile.model.UserDTO;
 import com.devsmile.repository.UserRepository;
 
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-@NoArgsConstructor
-//@RequiredArgsConstructor
+//@NoArgsConstructor
+@RequiredArgsConstructor
+@PropertySource("classpath:application.properties")
 public class UserService {
 
-	@Value("${jdbc.url}")
-	private static String AGE_SERVICE_URL;
+	@Value("{service.age.url}")
+	private String AGE_SERVICE_URL;
+	
+	@Autowired
+	private ServiceConnectiongConfiguration config;
+	
 
 	@Autowired
 	private UserRepository userRepository;
 
-	public List<UserDTO> getUsersList() {
+	public ResponseEntity<List<UserDTO>> getUsersList() {
 		List<User> users = userRepository.findAll();
-		log.info("2 Result List = {};", users.toString());
-		return users.stream().map(user -> UserTransformer.convert(user)).collect(Collectors.toList());
+		log.info("2 Result users = {};", users.toString());
+		
+		List<UserDTO> usersDTO = users.stream().map(user -> UserTransformer.convert(user)).collect(Collectors.toList());
+		log.info("2 Result usersDTO = {};", usersDTO.toString());
+		
+		return ResponseEntity.ok().body(usersDTO);
 	}
 
-	public ResponseEntity<UserDTO> getUserById(Integer id) {
-		ResponseEntity<User> response = exchange(id);
+	public UserDTO getUserById(Integer id) {
+		ResponseEntity<UserDTO> response = getAgeServiseResponse(id);
 
 		log.info("2 getUserById status = {};", response.getStatusCode());
 
 		if (response.getStatusCode() == HttpStatus.OK) {
-
-			UserDTO userDTO = UserTransformer.convert(response.getBody());
+			UserDTO userDTO = UserTransformer.convert(userRepository.findById(id).get());
+			UserDTO respUserDTO = response.getBody();
+			userDTO.setAge(respUserDTO.getAge());
+			
 			log.info("2 Result UserDTO = {}", userDTO.toString());
-
 			return userDTO;
 		} else {
 			return null;
 		}
 	}
 
-	private ResponseEntity<User> exchange(Integer id) {
-		return new RestTemplate().exchange(String.format(AGE_SERVICE_URL + "/{}", id), 
-				HttpMethod.GET, PrapareHttpEntity(), User.class);
+	private ResponseEntity<UserDTO> getAgeServiseResponse(Integer id) {
+		ResponseEntity<UserDTO> response = 
+				new RestTemplate()
+				.exchange(String.format("http:/{}:{}/user/{}",config.getHost(),config.getPort(), id),
+						HttpMethod.GET,
+						PrapareHttpEntity(),
+						UserDTO.class);
+		return response;
+//		return new RestTemplate().exchange(String.format(AGE_SERVICE_URL + "/{}", id), 
+//				HttpMethod.GET, PrapareHttpEntity(), UserDTO.class);
 	}
 	
 	private HttpEntity<String> PrapareHttpEntity() {

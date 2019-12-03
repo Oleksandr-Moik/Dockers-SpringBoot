@@ -25,17 +25,23 @@ public class UserService {
 
 	public List<UserDTO> getUsersList() {
 		List<User> users = userRepository.findAll();
-		log.info("3 Result List = {}", users.toString());
-		return users.stream().map(user -> UserTransformer.convert(user)).collect(Collectors.toList());
+		log.info("3 Result users = {}", users.toString());
+		
+		List<UserDTO> usersDTO = users.stream().map(user -> UserTransformer.convert(user)).collect(Collectors.toList());
+		log.info("3 Result users = {}", users.toString());
+		
+		return usersDTO;
 	}
 
-	public UserDTO getUser(Integer id) {
+	public UserDTO getUserById(Integer id) {
 
 		Optional<User> user = userRepository.findById(id);
 		log.info("3 Result Optional<User> = {}", user.toString());
 
 		if (user.isPresent()) {
-			return UserTransformer.convert(user.get());
+			UserDTO userDTO = UserTransformer.convert(user.get());
+			log.info("3 UserDTO: {}",userDTO);
+			return userDTO;
 		} else {
 			return null;
 		}
