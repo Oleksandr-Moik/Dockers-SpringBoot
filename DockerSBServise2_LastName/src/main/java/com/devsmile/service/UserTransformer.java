@@ -2,7 +2,6 @@ package com.devsmile.service;
 
 import com.devsmile.model.User;
 import com.devsmile.model.UserDTO;
-import com.devsmile.model.UserResponseDTO;
 
 public class UserTransformer {
 	
@@ -20,18 +19,4 @@ public class UserTransformer {
 				.build();
 	}
 	
-	public static UserDTO convertToUserDTO(UserResponseDTO user) {
-		return UserDTO.builder()
-				.id(user.getId())
-				.age(user.getAge())
-				.build();
-	}
-	
-	public static UserDTO concatUsers(User userDB, UserResponseDTO userResp) {
-		return UserDTO.builder()
-				.id(userDB.getId())
-				.lastName(userDB.getLastName())
-				.age(userResp.getAge())
-				.build();
-	}
 }

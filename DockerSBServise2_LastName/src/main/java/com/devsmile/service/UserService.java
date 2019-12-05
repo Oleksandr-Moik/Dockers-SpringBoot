@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,7 +19,6 @@ import org.springframework.web.client.RestTemplate;
 import com.devsmile.ServiceConnectiongConfiguration;
 import com.devsmile.model.User;
 import com.devsmile.model.UserDTO;
-import com.devsmile.model.UserResponseDTO;
 import com.devsmile.repository.UserRepository;
 
 import lombok.NoArgsConstructor;
@@ -33,29 +33,41 @@ public class UserService {
 
 	@Autowired
 	private ServiceConnectiongConfiguration config;
-	
 
 	@Autowired
 	private UserRepository userRepository;
 
-	public ResponseEntity<List<UserDTO>> getUsersList() {
-		List<User> users = userRepository.findAll();
-		log.info("2 Result users = {};", users.toString());
-		
-		List<UserDTO> usersDTO = users.stream().map(user -> UserTransformer.convertToUserDTO(user)).collect(Collectors.toList());
-		log.info("2 Result usersDTO = {};", usersDTO.toString());
-		
-		return ResponseEntity.ok().body(usersDTO);
-	}
-
-	public UserDTO getUserById(Integer id) {
-		ResponseEntity<UserResponseDTO> response = getAgeServiseResponse(id);
+	public List<UserDTO> getUsersList() {
+		ResponseEntity<List<UserDTO>> response = getAgeServiseResponse();
 
 		log.info("2 getUserById response status = {};", response.getStatusCode());
 		log.info("2 getUserById response body = {};", response.getBody());
 
 		if (response.getStatusCode() == HttpStatus.OK) {
-			UserDTO userDTO = UserTransformer.concatUsers(userRepository.findById(id).get(), response.getBody());
+			List<User> users = userRepository.findAll();
+			log.info("2 Result users = {};", users.toString());
+			
+			@SuppressWarnings("static-access")
+			List<UserDTO> usersDTO =  users.stream().map(user->UserTransformer.convertToUserDTO(user).builder().lastName(user.getLastName()).build()).collect(Collectors.toList());
+			log.info("2 Result usersDTO = {};", usersDTO.toString());
+			return usersDTO;
+		}
+		else {
+			return null;			
+		}
+	}
+
+	public UserDTO getUserById(Integer id) {
+		ResponseEntity<UserDTO> response = getAgeServiseResponse(id);
+
+		log.info("2 getUserById response status = {};", response.getStatusCode());
+		log.info("2 getUserById response body = {};", response.getBody());
+
+		if (response.getStatusCode() == HttpStatus.OK) {
+			UserDTO userDTO = UserTransformer.convertToUserDTO(userRepository.findById(id).get());
+			userDTO.setAge(response.getBody().getAge());
+			;
+
 			log.info("2 Result UserDTO = {}", userDTO.toString());
 			return userDTO;
 		} else {
@@ -63,14 +75,23 @@ public class UserService {
 		}
 	}
 
-	private ResponseEntity<UserResponseDTO> getAgeServiseResponse(Integer id) {
-		String url = String.format("http://%s:%s/user/%d",config.getHost(),config.getPort(), id);
-		log.info("url = {}",url);
-		ResponseEntity<UserResponseDTO> response = 
-				new RestTemplate().exchange(url, HttpMethod.GET,PrapareHttpEntity(),UserResponseDTO.class);
+	private ResponseEntity<UserDTO> getAgeServiseResponse(Integer id) {
+		String url = String.format("http://%s:%s/user/%d", config.getHost(), config.getPort(), id);
+		log.info("url = {}", url);
+		ResponseEntity<UserDTO> response = new RestTemplate().exchange(url, HttpMethod.GET, PrapareHttpEntity(),
+				UserDTO.class);
 		return response;
 	}
-	
+
+	private ResponseEntity<List<UserDTO>> getAgeServiseResponse() {
+		String url = String.format("http://%s:%s/user", config.getHost(), config.getPort());
+		log.info("url = {}", url);
+		ResponseEntity<List<UserDTO>> response = new RestTemplate().exchange(url, HttpMethod.GET, PrapareHttpEntity(),
+				new ParameterizedTypeReference<List<UserDTO>>() {
+				});
+		return response;
+	}
+
 	private HttpEntity<String> PrapareHttpEntity() {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
