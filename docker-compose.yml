@@ -6,17 +6,17 @@ networks:
 
 services:
 
-  # service-1-firsname:
-  #   container_name: firstName
-  #   image: service-1-firsname:v1
-  #   build: ./DockerSBServise1_FirstName/
-  #   ports:
-  #     - '8081:8081'
-  #   depends_on:
-  #     - service-2-lastname 
-  #     - my-sql-db
-  #   networks:
-  #     - default-net
+  service-1-firsname:
+    container_name: firstName
+    image: service-1-firsname:v1
+    build: ./DockerSBServise1_FirstName/
+    ports:
+      - '8081:8081'
+    depends_on:
+      - service-2-lastname 
+      - my-sql-db
+    networks:
+      - default-net
      
       
   service-2-lastname:
