@@ -46,9 +46,12 @@ public class UserService {
 		if (response.getStatusCode() == HttpStatus.OK) {
 			List<User> users = userRepository.findAll();
 			log.info("2 Result users = {};", users.toString());
+			List<UserDTO> usersDTO =  users.stream().map(user->UserTransformer.convertToUserDTO(user)).collect(Collectors.toList());
 			
-			@SuppressWarnings("static-access")
-			List<UserDTO> usersDTO =  users.stream().map(user->UserTransformer.convertToUserDTO(user).builder().lastName(user.getLastName()).build()).collect(Collectors.toList());
+			List<UserDTO> usersDTOAge = response.getBody();
+			for(int i=0;i<users.size();++i) {
+				usersDTO.get(i).setAge(usersDTOAge.get(i).getAge());
+			}
 			log.info("2 Result usersDTO = {};", usersDTO.toString());
 			return usersDTO;
 		}

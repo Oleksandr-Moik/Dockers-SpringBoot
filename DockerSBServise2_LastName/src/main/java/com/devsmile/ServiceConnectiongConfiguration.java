@@ -3,10 +3,14 @@ package com.devsmile;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Component
+@NoArgsConstructor
+@AllArgsConstructor
 @ConfigurationProperties(prefix = "service.age")
 public class ServiceConnectiongConfiguration {
 

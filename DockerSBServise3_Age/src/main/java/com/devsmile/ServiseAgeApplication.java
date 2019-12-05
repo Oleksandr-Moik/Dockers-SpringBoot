@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DockerSbServiseLastNameApplication {
+public class ServiseAgeApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DockerSbServiseLastNameApplication.class, args);
+		SpringApplication.run(ServiseAgeApplication.class, args);
 	}
 
 }

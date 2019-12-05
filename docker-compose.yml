@@ -31,16 +31,16 @@ services:
   #   networks:
   #     - default-net
     
-  # service-3-age:
-  #   container_name: age
-  #   image: service-3-age:v1
-  #   build: ./DockerSBServise3_Age
-  #   ports:
-  #     - '8083:8083'
-  #   depends_on:
-  #     - my-sql-db
-  #   networks:
-  #     - default-net
+  service-3-age:
+    container_name: age
+    image: service-3-age:v1
+    build: ./DockerSBServise3_Age
+    ports:
+      - '8083:8083'
+    depends_on:
+      - my-sql-db
+    networks:
+      - default-net
 
   my-sql-db:
     image: mysql:5.7
