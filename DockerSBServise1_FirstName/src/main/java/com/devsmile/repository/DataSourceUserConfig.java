@@ -1,4 +1,4 @@
-package com.devsmile.repository.config;
+package com.devsmile.repository;
 
 import java.util.HashMap;
 
@@ -17,15 +17,14 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "com.devsmile.repository.dao", entityManagerFactoryRef = "UserRepositoryEntityManager",
-        transactionManagerRef = "UserRepositoryTransactionManager"
+        basePackages = "com.devsmile.repository", entityManagerFactoryRef = "UserDTOEntityManager",
+        transactionManagerRef = "UserDTOTransactionManager"
 )
-public class DataSourceUserRepositoryConfig {
-
+public class DataSourceUserConfig {
     @Autowired
     private Environment environment;
     @Bean
-    public DataSource UserRepositoryDataSourse() {
+    public DataSource UserDTODataSourse() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(environment.getProperty("spring.datasource.driver-class-name"));
         dataSource.setUrl(environment.getProperty("spring.datasource.url"));
@@ -34,11 +33,11 @@ public class DataSourceUserRepositoryConfig {
         return dataSource;
     }
     @Bean
-    public LocalContainerEntityManagerFactoryBean UserRepositoryEntityManager() {
+    public LocalContainerEntityManagerFactoryBean UserDTOEntityManager() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(UserRepositoryDataSourse());
+        em.setDataSource(UserDTODataSourse());
 
-        em.setPackagesToScan("com.devsmile.repository.model");
+        em.setPackagesToScan("com.devsmile.model");
         em.setPersistenceUnitName("PERSITENCE_UNIT_USER");
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -55,9 +54,9 @@ public class DataSourceUserRepositoryConfig {
         return em;
     }
     @Bean
-    public PlatformTransactionManager UserRepositoryTransactionManager() {
+    public PlatformTransactionManager UserDTOTransactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(UserRepositoryEntityManager().getObject());
+        transactionManager.setEntityManagerFactory(UserDTOEntityManager().getObject());
         return transactionManager;
     }
 }
