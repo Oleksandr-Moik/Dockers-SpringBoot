@@ -1,26 +1,15 @@
 package com.devsmile.service;
 
-import org.springframework.context.annotation.Bean;
-
-import com.devsmile.repository.model.UserRepositoryEntity;
-import com.devsmile.service.model.UserEntity;
+import com.devsmile.model.User;
+import com.devsmile.model.UserDTO;
 
 public class UserTransformer {
 
-	@Bean
-	public UserEntity convertToEntity(UserRepositoryEntity userRepositoryEntity) {
-		UserEntity user = new UserEntity()
-				.builder()
-				.age(userRepositoryEntity.getAge())
-				.build();
-		return user;
+	public static UserDTO convertToUserDTO(User user) {
+		return UserDTO.builder().age(user.getAge()).id(user.getId()).build();
 	}
-	
-	@Bean
-	public UserRepositoryEntity convertToDTO(UserEntity userEntity) {
-		UserRepositoryEntity user = new UserRepositoryEntity();
-		user.setAge(userEntity.getAge());
-		return user;
+
+	public static User convertToUser(UserDTO userDTO) {
+		return User.builder().age(userDTO.getAge()).id(userDTO.getId()).build();
 	}
-	
 }
