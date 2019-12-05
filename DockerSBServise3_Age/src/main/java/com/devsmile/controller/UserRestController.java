@@ -33,10 +33,10 @@ public class UserRestController {
 		UserDTO userDTO = userService.getUserById(id);
 		log.info("3 Returnet userDTO entity = {}", userDTO.toString());
 
-		if (userDTO.equals(null)) {
-			return ResponseEntity.badRequest().body(null);
-		} else {
+		if (!userDTO.equals(null)) {
 			return ResponseEntity.ok().body(userDTO);
+		} else {
+			return ResponseEntity.badRequest().body(null);
 		}
 	}
 }
