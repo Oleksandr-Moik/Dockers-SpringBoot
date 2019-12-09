@@ -5,13 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -33,24 +26,25 @@ public class UserService {
 	private final UserRepository userRepository;
 
 	public List<UserDTO> getUsersList() {
-		ResponseEntity<List<UserDTO>> response = getAgeServiseResponseList();
-		log.info("[FirstName]-[UserService] getUsersList response = {};", response);
+		List<UserDTO> usersDTOLastNameAge = getServiseResponseList();
+		log.info("[FirstName]-[UserService] getUsersList response = {};", usersDTOLastNameAge);
 
-		if (response.getStatusCode() == HttpStatus.OK) {
+		if (usersDTOLastNameAge != null) {
 			List<User> users = userRepository.findAll();
 			log.info("[FirstName]-[UserService] Result users = {};", users.toString());
 
-			List<UserDTO> usersDTO = users.stream().map(user -> UserTransformer.convertToUserDTO(user))
+			List<UserDTO> userDTOs = users.stream().map(user -> UserTransformer.convertToUserDTO(user))
 					.collect(Collectors.toList());
-
-			List<UserDTO> usersDTOLastNameAge = response.getBody();
-			for (int i = 0; i < users.size(); ++i) {
-				usersDTO.get(i).setLastName(usersDTOLastNameAge.get(i).getLastName());
-				usersDTO.get(i).setAge(usersDTOLastNameAge.get(i).getAge());
+			int p = 0;
+			for (UserDTO userDTO : userDTOs) {
+				userDTO.setLastName(usersDTOLastNameAge.get(p).getLastName());
+				userDTO.setAge(usersDTOLastNameAge.get(p).getAge());
+				++p;
 			}
-			log.info("[FirstName]-[UserService] Result usersDTO = {};", usersDTO.toString());
 
-			return usersDTO;
+			log.info("[FirstName]-[UserService] Result usersDTO = {};", userDTOs.toString());
+
+			return userDTOs;
 		} else {
 			log.info("[FirstName]-[UserService] bad response");
 			return null;
@@ -58,45 +52,34 @@ public class UserService {
 	}
 
 	public UserDTO getUserById(Integer id) {
-		ResponseEntity<UserDTO> response = getAgeServiseResponseUser(id);
+		UserDTO responseUserDTO = getServiseResponseUser(id);
+		log.info("[FirstName]-[UserService] getUserById response = {};", responseUserDTO);
 
-		log.info("[FirstName]-[UserService] getUserById response = {};", response);
-
-		if (response.getStatusCode() == HttpStatus.OK) {
+		if (responseUserDTO != null) {
 			User user = userRepository.findById(id).get();
-			log.info("[FirstName]-[UserService] Result user = {};", user);
+			log.info("[FirstName]-[UserService] User = {};", user);
 
 			UserDTO userDTO = UserTransformer.convertToUserDTO(user);
-			userDTO.setLastName(response.getBody().getLastName());
-			userDTO.setAge(response.getBody().getAge());
+			userDTO.setLastName(responseUserDTO.getLastName());
+			userDTO.setAge(responseUserDTO.getAge());
 
-			log.info("[FirstName]-[UserService] Result UserDTO = {}", userDTO.toString());
+			log.info("[FirstName]-[UserService] return userDTO = {}", userDTO.toString());
 			return userDTO;
 		} else {
 			return null;
 		}
 	}
 
-	private ResponseEntity<UserDTO> getAgeServiseResponseUser(Integer id) {
+	private UserDTO getServiseResponseUser(Integer id) {
 		String url = String.format("http://%s:%s/user/%d", config.getHost(), config.getPort(), id);
 		log.info("[FirstName]-[UserService] url = {}", url);
-		ResponseEntity<UserDTO> response = new RestTemplate().exchange(url, HttpMethod.GET, PrapareHttpEntity(),
-				UserDTO.class);
-		return response;
+		return new RestTemplate().getForEntity(url, UserDTO.class).getBody();
 	}
 
-	private ResponseEntity<List<UserDTO>> getAgeServiseResponseList() {
+	private List<UserDTO> getServiseResponseList() {
 		String url = String.format("http://%s:%s/user", config.getHost(), config.getPort());
 		log.info("[FirstName]-[UserService] url = {}", url);
-		ResponseEntity<List<UserDTO>> response = new RestTemplate().exchange(url, HttpMethod.GET, PrapareHttpEntity(),
-				new ParameterizedTypeReference<List<UserDTO>>() {
-				});
-		return response;
-	}
-
-	private HttpEntity<String> PrapareHttpEntity() {
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		return new HttpEntity<String>("parameters", httpHeaders);
+		UserDTO[] response = new RestTemplate().getForEntity(url,UserDTO[].class).getBody();
+		return Arrays.asList(response);
 	}
 }

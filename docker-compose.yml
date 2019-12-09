@@ -8,8 +8,8 @@ services:
 
   service-1-firsname:
     container_name: firstName
+    build: ./DockerSBServise1_FirstName
     image: service-1-firsname:v1
-    build: ./DockerSBServise1_FirstName/
     ports:
       - '8081:8081'
     depends_on:
@@ -21,8 +21,8 @@ services:
       
   service-2-lastname:
     container_name: lastName
+    build: ./DockerSBServise2_LastName
     image: service-2-lastname:v1
-    build: ./DockerSBServise2_LastName/
     ports:
       - '8082:8082'
     depends_on:
@@ -33,8 +33,8 @@ services:
     
   service-3-age:
     container_name: age
-    image: service-3-age:v1
     build: ./DockerSBServise3_Age
+    image: service-3-age:v1
     ports:
       - '8083:8083'
     depends_on:
