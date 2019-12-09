@@ -2,7 +2,6 @@ package com.devsmile.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,42 +11,33 @@ import org.springframework.web.bind.annotation.RestController;
 import com.devsmile.model.UserDTO;
 import com.devsmile.service.UserService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-public class UserRestController { 
-	
-	@Autowired
-	private UserService userService;
-	
-//	@GetMapping("/user")
+@RequiredArgsConstructor
+public class UserRestController {
+
+	private final UserService userService;
+
 	@RequestMapping(value = "/user", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<List<UserDTO>> getUsersList(){
-		log.info("1 Call getUsersList");
+	public ResponseEntity<List<UserDTO>> getUsersList() {
+		log.info("[FirstName]-[UserRestController] Call getUsersList");
+
 		List<UserDTO> users = userService.getUsersList();
-		log.info("1 Reterned list = {}",users);
-		if(!users.equals(null)) {
-			return ResponseEntity.ok(users);
-		}
-		else {
-			return ResponseEntity.badRequest().body(null);
-		}
+		log.info("[FirstName]-[UserRestController] Reterned list = {}", users);
+
+		return ResponseEntity.ok(users);
 	}
-	
-    //@GetMapping("/user/{id}", produces = "application/json")
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Integer id){
-    	
-		log.info("1 Call getUserById with param id = {}", id);
+
+	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Integer id) {
+		log.info("[FirstName]-[UserRestController] Call getUserById with param id = {}", id);
 
 		UserDTO userDTO = userService.getUserById(id);
-		log.info("1 Returnet userDTO entity = {}", userDTO.toString());
+		log.info("[FirstName]-[UserRestController] Returnet userDTO entity = {}", userDTO.toString());
 
-		if (!userDTO.equals(null)) {
-			return ResponseEntity.ok().body(userDTO);
-		} else {
-			return ResponseEntity.badRequest().body(null);
-		}
-    }
+		return ResponseEntity.ok().body(userDTO);
+	}
 }

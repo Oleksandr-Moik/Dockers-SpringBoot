@@ -2,7 +2,6 @@ package com.devsmile.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,34 +11,33 @@ import org.springframework.web.bind.annotation.RestController;
 import com.devsmile.model.UserDTO;
 import com.devsmile.service.UserService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class UserRestController {
 
-	@Autowired
-	private UserService userService;
+	private final UserService userService;
 
-//	@GetMapping("/user")
 	@RequestMapping(value = "/user", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<UserDTO>> getUsersList() {
-		log.info("3 Call getUsersList");
+		log.info("[Age]-[UserRestController] Call getUsersList");
+
+		List<UserDTO> usersDTO = userService.getUsersList();
+		log.info("[Age]-[UserRestController]  = {}", usersDTO);
+
 		return ResponseEntity.ok(userService.getUsersList());
 	}
 
-//	@GetMapping("/user/{id}")
 	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Integer id) {
-		log.info("3 Call getUserById with param id = {}", id);
+		log.info("[Age]-[UserRestController] Call getUserById with param id = {}", id);
 
 		UserDTO userDTO = userService.getUserById(id);
-		log.info("3 Returnet userDTO entity = {}", userDTO.toString());
+		log.info("[Age]-[UserRestController] Returnet userDTO entity = {}", userDTO.toString());
 
-		if (!userDTO.equals(null)) {
-			return ResponseEntity.ok().body(userDTO);
-		} else {
-			return ResponseEntity.badRequest().body(null);
-		}
+		return ResponseEntity.ok().body(userDTO);
 	}
 }

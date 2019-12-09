@@ -1,22 +1,18 @@
+
 package com.devsmile.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDTO {
 	
 	private Integer id;
     private Integer age;
 
-    public UserDTO() {
-        super();
-    }
-
-	public UserDTO(Integer id, Integer age) {
-		super();
-		this.id = id;
-		this.age = age;
-	}
 }

@@ -16,47 +16,47 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
-@EnableJpaRepositories(
-        basePackages = "com.devsmile.repository", entityManagerFactoryRef = "UserDTOEntityManager",
-        transactionManagerRef = "UserDTOTransactionManager"
-)
+@EnableJpaRepositories(basePackages = "com.devsmile.repository", entityManagerFactoryRef = "UserDTOEntityManager", transactionManagerRef = "UserDTOTransactionManager")
 public class DataSourceUserConfig {
-    @Autowired
-    private Environment environment;
-    @Bean
-    public DataSource UserDTODataSourse() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(environment.getProperty("spring.datasource.driver-class-name"));
-        dataSource.setUrl(environment.getProperty("spring.datasource.url"));
-        dataSource.setUsername(environment.getProperty("spring.datasource.username"));
-        dataSource.setPassword(environment.getProperty("spring.datasource.password"));
-        return dataSource;
-    }
-    @Bean
-    public LocalContainerEntityManagerFactoryBean UserDTOEntityManager() {
-        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(UserDTODataSourse());
+	@Autowired
+	private Environment environment;
 
-        em.setPackagesToScan("com.devsmile.model");
-        em.setPersistenceUnitName("PERSITENCE_UNIT_USER");
+	@Bean
+	public DataSource UserDTODataSourse() {
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		dataSource.setDriverClassName(environment.getProperty("spring.datasource.driver-class-name"));
+		dataSource.setUrl(environment.getProperty("spring.datasource.url"));
+		dataSource.setUsername(environment.getProperty("spring.datasource.username"));
+		dataSource.setPassword(environment.getProperty("spring.datasource.password"));
+		return dataSource;
+	}
 
-        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        em.setJpaVendorAdapter(vendorAdapter);
+	@Bean
+	public LocalContainerEntityManagerFactoryBean UserDTOEntityManager() {
+		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+		em.setDataSource(UserDTODataSourse());
 
-        HashMap<String, Object> properties = new HashMap<>();
+		em.setPackagesToScan("com.devsmile.model");
+		em.setPersistenceUnitName("PERSITENCE_UNIT_USER");
 
-        properties.put("hibernate.dialect", environment.getProperty("spring.jpa.properties.hibernate.dialect"));
-        properties.put("hibenate.show-sql", environment.getProperty("spring.jpa.show-sql"));
+		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+		em.setJpaVendorAdapter(vendorAdapter);
 
-        em.setJpaPropertyMap(properties);
-        em.afterPropertiesSet();
+		HashMap<String, Object> properties = new HashMap<>();
 
-        return em;
-    }
-    @Bean
-    public PlatformTransactionManager UserDTOTransactionManager() {
-        JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(UserDTOEntityManager().getObject());
-        return transactionManager;
-    }
+		properties.put("hibernate.dialect", environment.getProperty("spring.jpa.properties.hibernate.dialect"));
+		properties.put("hibenate.show-sql", environment.getProperty("spring.jpa.show-sql"));
+
+		em.setJpaPropertyMap(properties);
+		em.afterPropertiesSet();
+
+		return em;
+	}
+
+	@Bean
+	public PlatformTransactionManager UserDTOTransactionManager() {
+		JpaTransactionManager transactionManager = new JpaTransactionManager();
+		transactionManager.setEntityManagerFactory(UserDTOEntityManager().getObject());
+		return transactionManager;
+	}
 }
