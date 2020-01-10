@@ -1,4 +1,4 @@
-package com.devsmile.model;
+package com.devsmile.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

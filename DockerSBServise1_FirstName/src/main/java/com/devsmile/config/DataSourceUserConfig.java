@@ -1,4 +1,4 @@
-package com.devsmile.repository;
+package com.devsmile.config;
 
 import java.util.HashMap;
 
@@ -17,7 +17,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "com.devsmile.repository", entityManagerFactoryRef = "UserDTOEntityManager",
+        basePackages = "com.devsmile.repos", entityManagerFactoryRef = "UserDTOEntityManager",
         transactionManagerRef = "UserDTOTransactionManager"
 )
 public class DataSourceUserConfig {
@@ -37,7 +37,7 @@ public class DataSourceUserConfig {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(UserDTODataSourse());
 
-        em.setPackagesToScan("com.devsmile.model");
+        em.setPackagesToScan("com.devsmile.domain");
         em.setPersistenceUnitName("PERSITENCE_UNIT_USER");
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();

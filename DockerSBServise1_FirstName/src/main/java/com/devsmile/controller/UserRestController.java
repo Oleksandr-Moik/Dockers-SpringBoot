@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.devsmile.model.UserDTO;
+import com.devsmile.domain.dto.UserDTO;
 import com.devsmile.service.UserService;
 
 import lombok.RequiredArgsConstructor;

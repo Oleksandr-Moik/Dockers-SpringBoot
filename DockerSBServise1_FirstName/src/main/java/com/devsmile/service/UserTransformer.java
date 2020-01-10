@@ -1,7 +1,7 @@
 package com.devsmile.service;
 
-import com.devsmile.model.User;
-import com.devsmile.model.UserDTO;
+import com.devsmile.domain.User;
+import com.devsmile.domain.dto.UserDTO;
 
 public class UserTransformer {
 	

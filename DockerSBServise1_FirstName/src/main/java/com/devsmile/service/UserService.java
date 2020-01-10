@@ -8,10 +8,10 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.devsmile.ServiceConnectiongConfiguration;
-import com.devsmile.model.User;
-import com.devsmile.model.UserDTO;
-import com.devsmile.repository.UserRepository;
+import com.devsmile.config.ServiceConnectiongConfig;
+import com.devsmile.domain.User;
+import com.devsmile.domain.dto.UserDTO;
+import com.devsmile.repos.UserRepos;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,15 +22,15 @@ import lombok.extern.slf4j.Slf4j;
 @PropertySource("classpath:application.properties")
 public class UserService {
 
-	private final ServiceConnectiongConfiguration config;
-	private final UserRepository userRepository;
+	private final ServiceConnectiongConfig config;
+	private final UserRepos userRepos;
 
 	public List<UserDTO> getUsersList() {
 		List<UserDTO> usersDTOLastNameAge = getServiseResponseList();
 		log.info("[FirstName]-[UserService] getUsersList response = {};", usersDTOLastNameAge);
 
 		if (usersDTOLastNameAge != null) {
-			List<User> users = userRepository.findAll();
+			List<User> users = userRepos.findAll();
 			log.info("[FirstName]-[UserService] Result users = {};", users.toString());
 
 			List<UserDTO> userDTOs = users.stream().map(user -> UserTransformer.convertToUserDTO(user))
@@ -56,7 +56,7 @@ public class UserService {
 		log.info("[FirstName]-[UserService] getUserById response = {};", responseUserDTO);
 
 		if (responseUserDTO != null) {
-			User user = userRepository.findById(id).get();
+			User user = userRepos.findById(id).get();
 			log.info("[FirstName]-[UserService] User = {};", user);
 
 			UserDTO userDTO = UserTransformer.convertToUserDTO(user);

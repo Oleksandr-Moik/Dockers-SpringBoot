@@ -1,4 +1,4 @@
-package com.devsmile;
+package com.devsmile.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @ConfigurationProperties(prefix = "service.last-name")
-public class ServiceConnectiongConfiguration {
+public class ServiceConnectiongConfig {
 
 	private String host;
 	private String port;

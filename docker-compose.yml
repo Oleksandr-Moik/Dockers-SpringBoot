@@ -6,41 +6,41 @@ networks:
 
 services:
 
-  service-1-firsname:
-    container_name: firstName
-    build: ./DockerSBServise1_FirstName
-    image: service-1-firsname:v1
-    ports:
-      - '8081:8081'
-    depends_on:
-      - service-2-lastname 
-      - my-sql-db
-    networks:
-      - default-net
+  # service-1-firsname:
+  #   container_name: firstName
+  #   build: ./DockerSBServise1_FirstName
+  #   image: service-1-firsname:v1
+  #   ports:
+  #     - '8081:8081'
+  #   depends_on:
+  #     - service-2-lastname 
+  #     - my-sql-db
+  #   networks:
+  #     - default-net
      
       
-  service-2-lastname:
-    container_name: lastName
-    build: ./DockerSBServise2_LastName
-    image: service-2-lastname:v1
-    ports:
-      - '8082:8082'
-    depends_on:
-      - service-3-age
-      - my-sql-db
-    networks:
-      - default-net
+  # service-2-lastname:
+  #   container_name: lastName
+  #   build: ./DockerSBServise2_LastName
+  #   image: service-2-lastname:v1
+  #   ports:
+  #     - '8082:8082'
+  #   depends_on:
+  #     - service-3-age
+  #     - my-sql-db
+  #   networks:
+  #     - default-net
     
-  service-3-age:
-    container_name: age
-    build: ./DockerSBServise3_Age
-    image: service-3-age:v1
-    ports:
-      - '8083:8083'
-    depends_on:
-      - my-sql-db
-    networks:
-      - default-net
+  # service-3-age:
+  #   container_name: age
+  #   build: ./DockerSBServise3_Age
+  #   image: service-3-age:v1
+  #   ports:
+  #     - '8083:8083'
+  #   depends_on:
+  #     - my-sql-db
+  #   networks:
+  #     - default-net
 
   my-sql-db:
     image: mysql:5.7

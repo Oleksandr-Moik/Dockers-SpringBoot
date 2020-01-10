@@ -1,4 +1,4 @@
-package com.devsmile.model;
+package com.devsmile.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
