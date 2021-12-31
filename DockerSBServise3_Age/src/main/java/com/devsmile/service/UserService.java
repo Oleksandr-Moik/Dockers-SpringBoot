@@ -5,9 +5,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.devsmile.model.User;
-import com.devsmile.model.UserDTO;
-import com.devsmile.repository.UserRepository;
+import com.devsmile.domain.User;
+import com.devsmile.domain.dto.UserDTO;
+import com.devsmile.repository.UserRepos;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +17,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class UserService {
 
-	private final UserRepository userRepository;
+	private final UserRepos userRepos;
 
 	public List<UserDTO> getUsersList() {
-		List<User> users = userRepository.findAll();
+		List<User> users = userRepos.findAll();
 		log.info("[Age]-[UserService] Result users = {}", users.toString());
 
 		List<UserDTO> usersDTO = users.stream().map(user -> UserTransformer.convertToUserDTO(user))
@@ -31,7 +31,7 @@ public class UserService {
 	}
 
 	public UserDTO getUserById(Integer id) {
-		User user = userRepository.findById(id).get();
+		User user = userRepos.findById(id).get();
 		log.info("[Age]-[UserService] Result Optional<User> = {}", user.toString());
 
 		UserDTO userDTO = UserTransformer.convertToUserDTO(user);
